@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import chat from "./controllers/chat";
 require("dotenv").config();
 
@@ -17,6 +18,7 @@ const io = require('socket.io')(http, {
 });
 
 //Middlewares
+app.use(cors());
 app.use(express.json ({limit: "5mb"}));
 app.use(express.urlencoded({extended: true}));
 
