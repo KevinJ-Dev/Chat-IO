@@ -13,6 +13,11 @@ function App() {
             console.log("user joined message", msg);
         });
 
+        socket.on("message", (message) => {
+            // console.log("message", message)
+            setMessages((previousMessages) => [...previousMessages, message]);
+        });
+
         return() => {
             socket.off("user joined")
         };
@@ -27,7 +32,7 @@ function App() {
 
     const handleMessage = (e) => {
         e.preventDefault();
-        socket.emit("message", `${username} - ${message}`)
+        socket.emit("message", `${username} - ${message}`);
         setMessage("");
     }
 
@@ -77,6 +82,10 @@ function App() {
                   </form>
               )}
       </div>
+
+        <div className="row">
+            <pre>{JSON.stringify(messages, null, 4)}</pre>
+        </div>
   </div>
   );
 }
