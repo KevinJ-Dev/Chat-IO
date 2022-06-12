@@ -7,6 +7,7 @@ function App() {
     const [connected, setConnected] = useState(false);
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() =>{
         socket.on("user joined", (msg) => {
@@ -18,10 +19,26 @@ function App() {
             setMessages((previousMessages) => [...previousMessages, message]);
         });
 
+        socket.on("users", (users) => {
+           setUsers(users);
+        });
+
         return() => {
-            socket.off("user joined")
+            socket.off("user joined");
+            socket.off("message");
         };
     },[])
+
+    useEffect(() => {
+       socket.on("users", (users) => {
+           setUsers(users);
+       });
+
+        return() => {
+            socket.off("users");
+        };
+
+    }, [socket]);
     
     const handleUsername = (e) => {
         e.preventDefault();
@@ -83,8 +100,26 @@ function App() {
               )}
       </div>
 
-        <div className="row">
-            <pre>{JSON.stringify(messages, null, 4)}</pre>
+        <div className="row pt-5">
+            <div className="col-md-8">
+                <pre>
+                    {messages.map((m, index) => (
+                        <div className="alert alert-secondary" key={index}>
+                            {m}
+                        </div>
+                    ))}
+                </pre>
+            </div>
+
+            <div className="col-md-4">
+                <pre>
+                    {users.map((u, index) => (
+                        <div className="alert alert-primary" key={index}>
+                            {u}
+                        </div>
+                    ))}
+                </pre>
+            </div>
         </div>
   </div>
   );
