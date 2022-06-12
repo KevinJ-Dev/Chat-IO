@@ -4,6 +4,16 @@ import socket from './socket';
 function App() {
     //State
     const [username, setUsername] = useState("");
+
+    useEffect(() =>{
+        socket.on("user joined", (msg) => {
+            console.log("user joined message", msg);
+        });
+
+        return() => {
+            socket.off("user joined")
+        };
+    },[])
     
     const handleUsername = (e) => {
         e.preventDefault();
