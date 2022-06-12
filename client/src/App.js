@@ -42,9 +42,19 @@ function App() {
     
     const handleUsername = (e) => {
         e.preventDefault();
-        console.log(username);
-        socket.emit("username", username);
-        setConnected(true);
+        // console.log(username);
+        // socket.emit("username", username);
+        // setConnected(true);
+        socket.auth = { username };
+        socket.connect();
+        console.log(socket);
+
+        setTimeout(() => {
+            if (socket.connected){
+                console.log("soket.connected", socket);
+                setConnected(true);
+            }
+        }, 300)
     };
 
     const handleMessage = (e) => {
