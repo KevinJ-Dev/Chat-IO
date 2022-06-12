@@ -8,6 +8,11 @@ const chat = (io) => {
             // io.emit("user joined", `${username} joined`);
             socket.broadcast.emit("user joined", `${username} joined`);
         });
+
+        socket.on("message", (message) => {
+            io.emit("message", message);
+        });
+
     //Disconnect
         socket.on('disconnect', () => {
             console.log("user disconnect")
